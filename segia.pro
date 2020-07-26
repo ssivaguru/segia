@@ -5,7 +5,7 @@
 TEMPLATE = app
 TARGET = segia
 INCLUDEPATH += .
-QT += widgets
+QT += widgets 
 
 # The following define makes your compiler warn you if you use any
 # feature of Qt which has been marked as deprecated (the exact warnings
@@ -21,4 +21,5 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # Input
 HEADERS += 
 SOURCES += src/main.cpp 
+LIBS += -lqtermwidget5
 #FORMS += 

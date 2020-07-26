@@ -1,15 +1,24 @@
 #include <QApplication>
 #include <QWidget>
+#include <QKeySequence>
+#include <QMainWindow>
+#include <qtermwidget5/qtermwidget.h>
 
-int main(int argc, char *argv[]) {
-    
+int main(int argc, char *argv[])
+{
+
     QApplication app(argc, argv);
 
-    QWidget window;
+    QMainWindow *mainWindow = new QMainWindow();
 
-    window.resize(250, 150);
-    window.setWindowTitle("Segia");
-    window.show();
+    QTermWidget *console = new QTermWidget();
+
+    mainWindow->resize(250, 150);
+    mainWindow->setWindowTitle("Segia");
+
+    mainWindow->setCentralWidget(console);
+
+    mainWindow->show();
 
     return app.exec();
 }
