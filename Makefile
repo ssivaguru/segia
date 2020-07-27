@@ -52,8 +52,11 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = src/main.cpp 
-OBJECTS       = main.o
+SOURCES       = src/main.cpp \
+		src/mainWindow.cpp moc_mainWindow.cpp
+OBJECTS       = main.o \
+		mainWindow.o \
+		moc_mainWindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -130,7 +133,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		segia.pro  src/main.cpp
+		segia.pro include/mainWindow.h src/main.cpp \
+		src/mainWindow.cpp
 QMAKE_TARGET  = segia
 DESTDIR       = 
 TARGET        = segia
@@ -312,7 +316,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents include/mainWindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/main.cpp src/mainWindow.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -344,8 +349,14 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all:
+compiler_moc_header_make_all: moc_mainWindow.cpp
 compiler_moc_header_clean:
+	-$(DEL_FILE) moc_mainWindow.cpp
+moc_mainWindow.cpp: include/mainWindow.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/siva/LinuxAgent/agent/source/src/MyGit/segia/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/siva/LinuxAgent/agent/source/src/MyGit/segia -I/home/siva/LinuxAgent/agent/source/src/MyGit/segia -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include include/mainWindow.h -o moc_mainWindow.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -358,12 +369,18 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean 
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
 
-main.o: src/main.cpp 
+main.o: src/main.cpp include/mainWindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o src/main.cpp
+
+mainWindow.o: src/mainWindow.cpp include/mainWindow.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainWindow.o src/mainWindow.cpp
+
+moc_mainWindow.o: moc_mainWindow.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainWindow.o moc_mainWindow.cpp
 
 ####### Install
 
