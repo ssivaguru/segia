@@ -2,3 +2,16 @@
 ui_mainwindow.h
 main.o
 segia
+main.o
+main.o
+mainWindow.o
+moc_mainWindow.cpp
+moc_mainWindow.o
+moc_predefs.h
+segia
+.vscode/settings.json
+src/mainwindow.ui
+src/terminal.qrc
+main.o
+main.o
+segia
