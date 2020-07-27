@@ -1,0 +1,14 @@
+QToolButton {
+    background-color: rgb(75, 126, 238);
+    border-width: 5px;
+    border-color: coral;
+    border-radius: 10px;
+    padding: 0;
+    margin: 0;
+    width: 20px;
+    min-width: 20px;
+    max-width: 20px;
+    height: 20px;
+    min-height: 20px;
+    max-height: 20px;
+}
